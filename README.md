@@ -1,2 +1,2 @@
 # OpenDynamics
-Quantum Dynamis in the phase space of quantum open systems
+Quantum Dynamics in the phase space of open systems
