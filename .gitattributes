@@ -1,2 +1,5 @@
 * linguist-vendored
 *.js linguist-vendored=True
+*.jl linguist-vendored=True
+*.nb linguist-vendored=False
+*.dat linguist-vendored=False
