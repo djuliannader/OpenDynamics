@@ -1,5 +1,5 @@
 # linguist-vendored
-*.jl linguist-vendored=Julia
+*.jl linguist-lenguaje=Julia
 *.nb linguist-vendored=False
 
 
