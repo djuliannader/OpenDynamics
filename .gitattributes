@@ -1,4 +1,5 @@
 # linguist-vendored
 *.jl linguist-vendored=Julia
+*.nb linguist-vendored=False
 
 
