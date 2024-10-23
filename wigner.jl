@@ -92,17 +92,22 @@ function wignerf_component(psi,L,N)
 function wigner_mix(wp,psis,L,N,name::String)
      winst=wignerf_component(psis[1],L,N)
      wres = [0.0 for i in 1:length(winst)]
+     d=2*L/N
    for i in 1:length(wp)
      winst=wignerf_component(psis[i],L,N)
      wr = [winst[j][3] for j in 1:length(winst)]
      wres = wres  + wp[i]*wr
    end
+   sumw = 0.0
+   sumnw = 0.0   
    open(name,"w") do io
       for i in 1:length(wres)
         println(io,winst[i][1]," ",winst[i][2]," ",wres[i])
+	sumw=sumw+d*d*wres[i]
+	sumnw=sumnw+d*d*abs(wres[i])
       end
    end
-   return "done"
+   return [real(sumw),real(sumnw)-1]
 end
 
 function focktowf(lfock,L,N)
