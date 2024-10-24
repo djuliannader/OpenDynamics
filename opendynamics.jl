@@ -28,11 +28,14 @@ end
 
 
 function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
-  times=(0.0,time)
+  times=(0.0,time[length(time)])
   f(u,p,t) = -im*(Ham*u-u*Ham) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) ) 
   prob = ODEProblem(f,rho0,times)
   sol = solve(prob)
-  rhot = sol(time)
+  wlist=[]
+  wnlist=[]
+  for k in 1:length(time)
+  rhot = sol(time[k])
   evals=eigvals(rhot)
   evecs=eigvecs(rhot)
   eps = 0.001
@@ -46,8 +49,11 @@ function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
     append!(wstates,[compwf])
     iflag=iflag-1
   end
-  ww=wigner.wigner_mix(w,wstates,L,N,string)
-  return ww
+  ww=wigner.wigner_mix(w,wstates,L,N,string[k])
+  append!(wlist,ww[1])
+  append!(wnlist,ww[2])
+  end
+  return [wlist,wnlist]
 end
 
 function expectation2modes(op,Ham,rho0,jpar,jop,tmax,tmsp)

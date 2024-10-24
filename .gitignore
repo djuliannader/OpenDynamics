@@ -25,5 +25,5 @@ Manifest.toml
 
 *.dat~
 *.jl~
-Wopentest.dat
 2modes.jl
+*_out.dat
