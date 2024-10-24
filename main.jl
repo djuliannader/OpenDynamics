@@ -23,7 +23,7 @@ tint = 0.1       # Time interval for the Wigner function shoots
 #  ------ Caulculating ----------------
 timep=[(i-1)*tint for i in 1:nshots]
 outputlist=["wignerfunction"*string(i-1)*"_out.dat" for i in 1:nshots]
-HH = build.Hamiltonian(Nfock,Delta,epsilon,K)
+HH = build.HamiltonianKerr(Nfock,Delta,epsilon,K)
 rho0 = build.initialrho(Nfock,xav,pav)
 #rho0 = build.initialrhomix(Nfock,xav,pav)
 a = build.creation(Nfock)

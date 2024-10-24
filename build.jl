@@ -3,7 +3,7 @@ push!(LOAD_PATH, pwd())
 using LinearAlgebra
 
 
-function Hamiltonian(Nmax,delta,ep,K)
+function HamiltonianKerr(Nmax,delta,ep,K)
   diag  = [0.0 for i in 1:(Nmax+1)]
   diagid  = [1.0 for i in 1:(Nmax+1)]
   diaga = [0.0 for i in 1:Nmax]
@@ -12,7 +12,6 @@ function Hamiltonian(Nmax,delta,ep,K)
   id = Diagonal(diagid)
   adop = transpose(aop)
   #Ham = adop*aop+(1/2)*id
-  #Ham = -delta*adop*aop-ep*(adop^2+aop^2)+K*adop^2*aop^2
   Ham = -delta*adop*aop - ep*(adop^2+aop^2) + K*adop^2*aop^2
   return Ham
 end
