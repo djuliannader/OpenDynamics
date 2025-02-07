@@ -1,6 +1,8 @@
 module wigner
 push!(LOAD_PATH, pwd())
 export wignerf
+export focktowf
+export wigner_mix
 #import body
 #import norm
 
@@ -40,11 +42,11 @@ function wignerf(psi,L,N,name::String)
            end
 	 end
 	 println("Go to file ",name," to see the wigner function")
-	 println("Volume of the wigner function: ",real(sumw))
-	 println("Volume of the negative region: ",real(sumnw)-1)
-	 println("Expectation value <x^2> : ",real(sumnx))
+	 #println("Volume of the wigner function: ",real(sumw))
+	 #println("Volume of the negative region: ",real(sumnw)-1)
+	 #println("Expectation value <x^2> : ",real(sumnx))
+	 return [real(sumw),real(sumnw)-1]
 	 end
-         return "Done"
 	 end
 
 
