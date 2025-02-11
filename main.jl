@@ -7,16 +7,16 @@ import build
 import opendynamics
 
 
-Nfock=20         # Size of the Fock space
+Nfock=26         # Size of the Fock space
 N=400            # Finite differences
 L=20             # Size of the phase space
-xav=-2.0         # Average position of the initial coherent state
-pav=2.0          # Average momentum of the initial coherent state
-Delta=-2.0        # Parameter of the Kerr Hamiltonian
+xav=-1.9       # Average position of the initial coherent state
+pav=0.0          # Average momentum of the initial coherent state
+Delta=-2.0       # Parameter of the Kerr Hamiltonian
 epsilon=0.0      # Parameter of the Kerr Hamiltonian
 K=1.0            # Parameter of the Kerr Hamiltonian
-tm = 1.0         # Maximum time for survival probability
-nshots=30         # Number of shoots for the Wigner function
+tm = 2.0         # Maximum time for survival probability
+nshots=5         # Number of shoots for the Wigner function
 tint = 0.1       # Time interval for the Wigner function shoots
 
 

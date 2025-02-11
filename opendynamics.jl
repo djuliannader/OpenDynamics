@@ -8,9 +8,10 @@ import build
 
 function survivalp(Nmax,Ham,rho0,jpar,jop,tmax)
   times=(0.0,tmax)
+  tint=0.05
   f(u,p,t) = -im*(Ham*u-u*Ham) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) )
  prob = ODEProblem(f,rho0,times)
- sol = solve(prob)
+ sol = solve(prob,Tsit5(),alg_hints = [:stiff],dt=tint)
  #println("--here --")
  tint=0.05
  nt = floor(Int, tmax/tint)
@@ -29,9 +30,10 @@ end
 
 function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
   times=(0.0,time[length(time)])
+  tint=0.05
   f(u,p,t) = -im*(Ham*u-u*Ham) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) ) 
   prob = ODEProblem(f,rho0,times)
-  sol = solve(prob)
+  sol = solve(prob,Tsit5(),alg_hints = [:stiff],dt=tint)
   wlist=[]
   wnlist=[]
   for k in 1:length(time)

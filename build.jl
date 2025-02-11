@@ -11,8 +11,12 @@ function HamiltonianKerr(Nmax,delta,ep,K)
   aop = Tridiagonal(diaga, diag, diagab)
   id = Diagonal(diagid)
   adop = transpose(aop)
+  xop=(1/2^(1/2))*(aop+adop)
+  pop=(-im)*(1/2^(1/2))*(aop-adop)
+  apar=10.0
   #Ham = adop*aop+(1/2)*id
-  Ham = -delta*adop*aop - ep*(adop^2+aop^2) + K*adop^2*aop^2
+  #Ham = -delta*adop*aop - ep*(adop^2+aop^2) + K*adop^2*aop^2
+  Ham = pop^2/2 - apar*xop^2 + xop^4
   return Ham
 end
 
@@ -28,7 +32,13 @@ end
 function coherentstate(Nmax,xc,pc)
   al=(1/2^(1/2))*(xc+im*pc)
   cs = [ exp(-abs2(al)/2)*al^n/sqrt(factorial(big(n))) for n in 0:Nmax]
-  return cs
+  csn = []
+  for i in 1:length(cs)
+  recs = convert(Float64, real(cs[i]))
+  imcs = convert(Float64, imag(cs[i]))
+  append!(csn,recs+im*imcs)
+  end
+  return csn
 end
 
 function initialrho(Nmax,xc,pc)
