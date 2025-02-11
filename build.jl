@@ -11,12 +11,12 @@ function HamiltonianKerr(Nmax,delta,ep,K)
   aop = Tridiagonal(diaga, diag, diagab)
   id = Diagonal(diagid)
   adop = transpose(aop)
-  xop=(1/2^(1/2))*(aop+adop)
-  pop=(-im)*(1/2^(1/2))*(aop-adop)
-  apar=10.0
+  #xop=(1/2^(1/2))*(aop+adop)
+  #pop=(-im)*(1/2^(1/2))*(aop-adop)
+  #apar=10.0
   #Ham = adop*aop+(1/2)*id
-  #Ham = -delta*adop*aop - ep*(adop^2+aop^2) + K*adop^2*aop^2
-  Ham = pop^2/2 - apar*xop^2 + xop^4
+  Ham = -delta*adop*aop - ep*(adop^2+aop^2) + K*adop^2*aop^2
+  #Ham = pop^2/2 - apar*xop^2 + xop^4
   return Ham
 end
 
