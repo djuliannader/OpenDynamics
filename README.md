@@ -17,7 +17,7 @@ The repository is currently being developed; please await its completion
 
 ## Usage
 
-For using the code go to file manipulate parameters from main.jl file and run as 
+For using the code go to file main.jl, manipulate parameters and run as 
 
 ```bash
 julia main.jl
