@@ -1,4 +1,4 @@
-# RabiModel
+# Open Dynamics
 Open dynamics of quantum systems with 1 degree of freedom
 
 clone as:

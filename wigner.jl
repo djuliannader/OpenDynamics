@@ -5,6 +5,8 @@ export focktowf
 export wigner_mix
 #import body
 #import norm
+using LinearAlgebra
+import build
 
 
 function wignerf(psi,L,N,name::String)
@@ -79,11 +81,12 @@ function wignerf_component(psi,L,N)
 		ie=ie+1
 	     end
 	     w=sum/(pi)
-	     #println(io,xinst," ",pinst," ",round(real(w),digits=16))
+	     wc = convert(Float64,real(w))
+	     #println(io,xinst," ",pinst," ",)
 	     #sumw=sumw+d*d*w
 	     #sumnw=sumnw+d*d*abs(w)
 	     #sumnx=sumnx+d*d*w*(xinst*xinst)
-	   push!(wigner,[xinst,pinst,round(real(w),digits=16)])  
+	   push!(wigner,[xinst,pinst,wc])  
            end
 	 end
 	 #end
@@ -101,7 +104,7 @@ function wigner_mix(wp,psis,L,N,name::String)
      wres = wres  + wp[i]*wr
    end
    sumw = 0.0
-   sumnw = 0.0   
+   sumnw = 0.0
    open(name,"w") do io
       for i in 1:length(wres)
         println(io,winst[i][1]," ",winst[i][2]," ",wres[i])
@@ -109,7 +112,9 @@ function wigner_mix(wp,psis,L,N,name::String)
 	sumnw=sumnw+d*d*abs(wres[i])
       end
    end
-   return [real(sumw),real(sumnw)-1]
+   res1=convert(Float64,real(sumw))
+   res2=convert(Float64,real(sumnw)-1)
+   return [res1,res2]
 end
 
 function focktowf(lfock,L,N)
@@ -134,13 +139,34 @@ function hermite(x,n)
    sum = sum + ((-1)^m/(factorial(big(m))*factorial(big(n-2*m))))*((2*x)^(n-2*m))
   end
   ff = factorial(big(n))*sum
-  return ff 
+  ffc = convert(ComplexF64, ff)
+  return ffc 
 end
 
 function fockbasis(n,x)
   fb = ((1/(2^n*factorial(big(n))*pi^(1/2))^(1/2)))*hermite(x,n)*exp(-x^2/2)
+  fbc = convert(ComplexF64, fb)
   return fb
 end
+
+#N=400
+#Nmax=20
+#L=20
+#smix=12
+#wp=[0.1 for i in 1:smix]
+#wfm=[]
+#for i in 1:smix
+#  cs = build.coherentstate(Nmax,0.1*i,0.1*i)
+#  rho = cs*transpose(conj(cs))
+#  evecs = eigvecs(rho)
+#  comp = [evecs[i,Nmax+1] for i in 1:(Nmax+1)]
+#  compwf = focktowf(comp,L,N)
+#  append!(wfm,[compwf])
+#end
+
+
+#wigner_mix(wp,wfm,L,N,"output/wigmix_test.dat")
+
 
 
 end

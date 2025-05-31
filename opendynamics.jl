@@ -6,12 +6,11 @@ import wigner
 import build
 
 
-function survivalp(Nmax,Ham,rho0,jpar,jop,tmax)
+function survivalp(Nmax,Ham,rho0,jpar,jop,tmax,tint)
   times=(0.0,tmax)
-  tint=0.01
   f(u,p,t) = -im*(Ham*u-u*Ham) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) )
  prob = ODEProblem(f,rho0,times)
- sol = solve(prob,Tsit5(),alg_hints = [:stiff],dt=tint)
+ sol = solve(prob,abstol = 1e-8,Tsit5(),alg_hints = [:stiff],dt=tint)
  #println("--here --")
  nt = floor(Int, tmax/tint)
  surprob = []
@@ -66,11 +65,14 @@ function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
   tint=0.01
   f(u,p,t) = -im*(Ham*u-u*Ham) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) ) 
   prob = ODEProblem(f,rho0,times)
-  sol = solve(prob,Tsit5(),alg_hints = [:stiff],dt=tint)
+  sol = solve(prob,abstol = 1e-8,Tsit5(),alg_hints = [:stiff],dt=tint)
   wlist=[]
   wnlist=[]
+  open("output/wignerresults.dat","w") do io
   for k in 1:length(time)
+  println("Calculating Wigner function at time:",time[k])
   rhot = sol(time[k])
+  #rhot = exp(-im*Ham*time[k])*rho0*exp(im*Ham*time[k])
   evals=eigvals(rhot)
   evecs=eigvecs(rhot)
   eps = 0.01
@@ -79,17 +81,19 @@ function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
   wstates=[]
   while real(evals[iflag])>eps
     append!(w,real(evals[iflag]))
+    println("component: ",real(evals[iflag]))
     comp = [evecs[i,iflag] for i in 1:(Nmax+1)]
     compwf = wigner.focktowf(comp,L,N)
     append!(wstates,[compwf])
-    #println("component: ",real(evals[iflag]))
     iflag=iflag-1
   end
   ww=wigner.wigner_mix(w,wstates,L,N,string[k])
+  println(io,time[k]," ",trunc(ww[1],digits=6)," ", trunc(ww[2],digits=6))
   append!(wlist,ww[1])
   append!(wnlist,ww[2])
   end
-  return [wlist,wnlist]
+  end
+  return "done"
 end
 
 function expectation2modes(op,Ham,rho0,jpar,jop,tmax,tmsp)
@@ -104,7 +108,7 @@ function expectation2modes(op,Ham,rho0,jpar,jop,tmax,tmsp)
  for i in 1:(nt+1)
    rhot = sol(tint*(i-1))
    expinst = tr(rhot*op)
-   println(io,tint*(i-1)," ", round(real(expinst),digits=16))
+   println(io,tint*(i-1)," ", round(real(expinst),sigdigits=8))
  end
  end
    rhot = sol(tmsp)
