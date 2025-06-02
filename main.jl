@@ -7,7 +7,7 @@ import build
 import opendynamics
 
 
-<<<<<<< HEAD
+
 Nfock=30         # Size of the Fock space
 N=500            # Finite differences
 L=20             # Size of the phase space
@@ -21,25 +21,10 @@ t0 = 0.0         # First shot of Wigner Fucntions
 nshots=1        # Number of shoots for the Wigner function
 tint = 0.1       # Time interval for the Wigner function shoots
 kk=1   		 # Fock state to be displaced
-=======
-Nfock=20                 # Size of the Fock space
-N=400                    # Finite differences
-L=20                     # Size of the phase space
-xav=-2.0                 # Average position of the initial coherent state
-pav=2.0                  # Average momentum of the initial coherent state
-Delta=-2.0               # Parameter of the Kerr Hamiltonian
-epsilon=0.0              # Parameter of the Kerr Hamiltonian
-K=1.0                    # Parameter of the Kerr Hamiltonian
-tm = 20                  # Maximum time for survival probability
-nshots = 11              # Number of shoots for the Wigner function
-tint = pi                # Time interval for the Wigner function shoots
 jumppar = [0.05,0.05]      # Jump parameters
 
 
-
-#=
 #  ------ Caulculating Open dynamics----------------
-<<<<<<< HEAD
 #timep = collect(t0:tint:t0 + (nshots-1)*tint)
 timep=[(i-1)*tint for i in 1:nshots]
 #timep=[]
