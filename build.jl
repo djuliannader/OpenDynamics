@@ -20,7 +20,21 @@ function HamiltonianKerr(Nmax,delta,ep,K)
   return Ham
 end
 
-function creation(Nmax)
+function HamiltonianOsc(Nmax,w0,x0,E0)
+  diag  = [0.0 for i in 1:(Nmax+1)]
+  diagid  = [1.0 for i in 1:(Nmax+1)]
+  diaga = [0.0 for i in 1:Nmax]
+  diagab = [sqrt(i) for i in 1:Nmax]
+  aop = Tridiagonal(diaga, diag, diagab)
+  id = Diagonal(diagid)
+  adop = transpose(aop)
+  xop=(1/2^(1/2))*(aop+adop)
+  pop=(-im)*(1/2^(1/2))*(aop-adop)
+  Ham = pop^2/2 + (w0/2)*(xop-x0*id)^2 + id*E0
+  return Ham
+end
+
+function anhilation(Nmax)
   diag  = [0.0 for i in 1:(Nmax+1)]
   diagid  = [1.0 for i in 1:(Nmax+1)]
   diaga = [0.0 for i in 1:Nmax]
@@ -31,13 +45,12 @@ end
 
 function coherentstate(Nmax,xc,pc)
   al=(1/2^(1/2))*(xc+im*pc)
-  cs = [ exp(-abs2(al)/2)*al^n/sqrt(factorial(big(n))) for n in 0:Nmax]
-  csn = []
-  for i in 1:length(cs)
-  recs = convert(Float64, real(cs[i]))
-  imcs = convert(Float64, imag(cs[i]))
-  append!(csn,recs+im*imcs)
-  end
+  vstate = [0 for i in 1:(Nmax+1)]
+  vstate[1] = 1.0
+  aop = anhilation(Nmax)
+  adop = transpose(aop)
+  Dop= exp(al*adop - conj(al)*aop)
+  csn = Dop*vstate
   return csn
 end
 
@@ -66,15 +79,17 @@ function initialrho(Nmax,xc,pc)
    return rhoin
 end
 
+
 function initialrhoGS(Ham)
   eigval, eigvec=eigen(Ham)
-  #println(eigval)
-  #idx=argmin(eigval)
-  #println(idx)
   gsvec=eigvec[:,1]
   gsvecad=transpose(conj(gsvec))
   rhogs = gsvec*gsvecad
   return ComplexF64.(rhogs)
+
+function initialpsi(Nmax,xc,pc)
+   cs = coherentstate(Nmax,xc,pc)
+   return cs
 end
 
 function initialrhomix(Nmax,xc,pc)

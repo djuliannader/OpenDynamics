@@ -9,10 +9,10 @@ import build
 Nfock=50         # Size of the Fock space
 N=400            # Finite differences
 L=20             # Size of the phase space
-Delta=-8.0        # Parameter of the Kerr Hamiltonian
-epsilon=5.0      # Parameter of the Kerr Hamiltonian
+Delta=-2.0        # Parameter of the Kerr Hamiltonian
+epsilon=8.0      # Parameter of the Kerr Hamiltonian
 K=1.0            # Parameter of the Kerr Hamiltonian
-nu = 8.0         # frequency of the drive 
+nu = 27.3135     # frequency of the drive 
 xi = 0.25         # strength of the drive
 Nf = 1000         # Number of intervals for the troterization
 kk = 1            # state of interest
@@ -37,14 +37,14 @@ println("Expectation value <Fk|H0|Fk> for k= ",kk,"  floquet state    : ",round(
 
 
 # ------  Printing results ----------------
-#open("resonances.dat","w") do io
-#nulist = [(0.0+0.1*i) for i in 1:400]
-#for i in 1:length(nulist)
-#tt = troterization.floquetstate(K,epsilon,Delta,Nfock,nulist[i],xi,Nf,L,N,name,kk)
-#println(io,nulist[i],"   ",round(tt[1][2], digits=8))
-#println(nulist[i],"   ",round(tt[1][2], digits=8))
-#end
-#end
+open("resonances3.dat","w") do io
+nulist = [(120.0+0.1*i) for i in 1:300]
+for i in 1:length(nulist)
+tt = troterization.floquetstate(K,epsilon,Delta,Nfock,nulist[i],xi,Nf,L,N,name,kk)
+println(io,nulist[i],"   ",round(tt[1][2], digits=8))
+println(nulist[i],"   ",round(tt[1][2], digits=8))
+end
+end
 # -----------------------------------------
 
 
