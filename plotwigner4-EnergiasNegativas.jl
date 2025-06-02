@@ -52,10 +52,10 @@ end # module
 # Example usage
 using .plotwigner
 
-for i in 3.0:0.1:5.0
+for i in 3.0:0.1:3.3
     # Input file and output file name
-    input_file = string("gsDelta=", i, ".dat")
-    output_combined = string("D = ", i, ".png")
+    input_file = string("output/gsDelta=", i, ".dat")
+    output_combined = string("output/D = ", i, ".png")
 
     # Title for the combined plot
     #t_value = round(i * 0.1, digits=2)

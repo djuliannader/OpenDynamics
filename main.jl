@@ -18,12 +18,11 @@ epsilon=0.0      # Parameter of the Kerr Hamiltonian
 K=1.0            # Parameter of the Kerr Hamiltonian
 tm = 0.1         # Maximum time for survival probability
 t0 = 0.0         # First shot of Wigner Fucntions
-nshots=1        # Number of shoots for the Wigner function
-tint = 0.1       # Time interval for the Wigner function shoots
-kk=1   		 # Fock state to be displaced
-jumppar = [0.05,0.05]      # Jump parameters
+nshots=5         # Number of shoots for the Wigner function
+tint = 1         # Time interval for the Wigner function shoots
+jumppar = [0.0,0.0]      # Jump parameters
 
-#=
+
 #  ------ Caulculating Open dynamics----------------
 #timep = collect(t0:tint:t0 + (nshots-1)*tint)
 timep=[(i-1)*tint for i in 1:nshots]
