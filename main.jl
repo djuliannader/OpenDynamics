@@ -43,7 +43,6 @@ jumpop = [a,ad]
 sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,tm,tint)
 wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,jumppar,jumpop,outputlist)
 # --------------------------------------
-=#
 
 
 #----------Calculating GS Wigner function--------------
