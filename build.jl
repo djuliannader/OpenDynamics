@@ -41,11 +41,40 @@ function coherentstate(Nmax,xc,pc)
   return csn
 end
 
+function generalCoherentStates(Nmax,k,xc,pc)		#k symbolizes the kth displaced state
+  al=(1/2^(1/2))*(xc+im*pc) 		     		#alpha
+  diagid  = [1.0 for i in 1:(Nmax+1)]
+  aop = creation(Nmax)
+  id = Diagonal(diagid)
+  adop = transpose(aop)
+  cs= coherentstate(Nmax,xc,pc)				#initialCoherentState
+  gcs=(1/sqrt(factorial(big(k)))*(adop-conj(al)*id)^k*cs)
+  return gcs
+end
+
+function initialgeneralrho(Nmax,k,xc,pc)
+   cs = generalCoherentStates(Nmax,k,xc,pc)
+   cstp = transpose(conj(cs))
+   rhoin = cs*cstp
+   return rhoin
+end
+
 function initialrho(Nmax,xc,pc)
    cs = coherentstate(Nmax,xc,pc)
    cstp = transpose(conj(cs))
    rhoin = cs*cstp
    return rhoin
+end
+
+function initialrhoGS(Ham)
+  eigval, eigvec=eigen(Ham)
+  #println(eigval)
+  #idx=argmin(eigval)
+  #println(idx)
+  gsvec=eigvec[:,1]
+  gsvecad=transpose(conj(gsvec))
+  rhogs = gsvec*gsvecad
+  return ComplexF64.(rhogs)
 end
 
 function initialrhomix(Nmax,xc,pc)
