@@ -16,11 +16,12 @@ pav=2.0          # Average momentum of the initial coherent state
 Delta=-2.0       # Parameter of the Kerr Hamiltonian
 epsilon=0.0      # Parameter of the Kerr Hamiltonian
 K=1.0            # Parameter of the Kerr Hamiltonian
-tm = 10.0        # Maximum time for survival probability
-nshots=1        # Number of shoots for the Wigner function
-tint = 0.1       # Time interval for the Wigner function shoots
-kk=1   		 # Fock state to be displaced
-jumppar = [0.04,0.04]      # Jump parameters
+tm = 0.1         # Maximum time for survival probability
+t0 = 0.0         # First shot of Wigner Fucntions
+nshots=5         # Number of shoots for the Wigner function
+tint = 1         # Time interval for the Wigner function shoots
+jumppar = [0.0,0.0]      # Jump parameters
+
 
 #  ------ Caulculating Open dynamics----------------
 #timep = collect(t0:tint:t0 + (nshots-1)*tint)

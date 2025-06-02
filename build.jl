@@ -57,7 +57,7 @@ end
 function generalCoherentStates(Nmax,k,xc,pc)		#k symbolizes the kth displaced state
   al=(1/2^(1/2))*(xc+im*pc) 		     		#alpha
   diagid  = [1.0 for i in 1:(Nmax+1)]
-  aop = creation(Nmax)
+  aop = anhilation(Nmax)
   id = Diagonal(diagid)
   adop = transpose(aop)
   cs= coherentstate(Nmax,xc,pc)				#initialCoherentState
@@ -86,6 +86,7 @@ function initialrhoGS(Ham)
   gsvecad=transpose(conj(gsvec))
   rhogs = gsvec*gsvecad
   return ComplexF64.(rhogs)
+end
 
 function initialpsi(Nmax,xc,pc)
    cs = coherentstate(Nmax,xc,pc)

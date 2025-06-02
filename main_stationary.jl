@@ -26,12 +26,12 @@ jumppar = [0.05,0.05]      # Jump parameters
 
 #----------Calculating GS Wigner function--------------
 timep = collect(t0:tint:t0 + (nshots-1)*tint)
-   a = build.creation(Nfock)
+   a = build.anhilation(Nfock)
    ad = transpose(conj(a))
    jumpop = [a,ad]
    jumppar = [0.0,0.0]
-for i in 3.0:0.1:5.0
-   outputlist=["gsDelta=$(i).dat" for j in 1:nshots]
+for i in 3.0:0.1:3.3
+   outputlist=["output/gsDelta=$(i).dat" for j in 1:nshots]
    #output="gsDelta=$(i)"
    HH=build.HamiltonianKerr(Nfock,i,epsilon,K)
    rho0 = build.initialrhoGS(HH)
