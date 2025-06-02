@@ -16,22 +16,21 @@ pav=2.0          # Average momentum of the initial coherent state
 Delta=-2.0       # Parameter of the Kerr Hamiltonian
 epsilon=0.0      # Parameter of the Kerr Hamiltonian
 K=1.0            # Parameter of the Kerr Hamiltonian
-tm = 0.1         # Maximum time for survival probability
-t0 = 0.0         # First shot of Wigner Fucntions
+tm = 10.0        # Maximum time for survival probability
 nshots=1        # Number of shoots for the Wigner function
 tint = 0.1       # Time interval for the Wigner function shoots
 kk=1   		 # Fock state to be displaced
-jumppar = [0.05,0.05]      # Jump parameters
+jumppar = [0.04,0.04]      # Jump parameters
 
 
 #  ------ Caulculating Open dynamics----------------
 #timep = collect(t0:tint:t0 + (nshots-1)*tint)
-timep=[(i-1)*tint for i in 1:nshots]
-#timep=[]
-#append!(timep,0.0)
-#for i in 1:(nshots-1)
-#append!(timep,i*tint+0.5)
-#end
+#timep=[(i-1)*tint for i in 1:nshots]
+timep=[]
+append!(timep,0.0)
+for i in 1:(nshots-1)
+append!(timep,i*tint+0.5)
+end
 #outputlist=["output/wignerfunction"*string(i-1)*"_out.dat" for i in 1:nshots]
 outputlist=["wignerfunction_out.dat" for i in 1:nshots]
 HH = build.HamiltonianKerr(Nfock,Delta,epsilon,K)
