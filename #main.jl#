@@ -22,12 +22,12 @@ jumppar = [0.05,0.05]      # Jump parameters
 
 
 #  ------ Caulculating Open dynamics----------------
-#timep=[(i-1)*tint for i in 1:nshots]
-timep=[]
-append!(timep,0.0)
-for i in 1:(nshots-1)
-append!(timep,i*tint+0.5)
-end
+timep=[(i-1)*tint for i in 1:nshots]
+#timep=[]
+#append!(timep,0.0)
+#for i in 1:(nshots-1)
+#append!(timep,i*tint+0.5)
+#end
 #outputlist=["output/wignerfunction"*string(i-1)*"_out.dat" for i in 1:nshots]
 outputlist=["wignerfunction_out.dat" for i in 1:nshots]
 HH = build.HamiltonianKerr(Nfock,Delta,epsilon,K)
