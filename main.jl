@@ -35,27 +35,18 @@ nshots = 11              # Number of shoots for the Wigner function
 tint = pi                # Time interval for the Wigner function shoots
 jumppar = [0.05,0.05]      # Jump parameters
 
->>>>>>> origin
+
 
 #=
 #  ------ Caulculating Open dynamics----------------
 <<<<<<< HEAD
-timep = collect(t0:tint:t0 + (nshots-1)*tint)
-outputlist=["wignerfunction"*string(i-1)*"_out.dat" for i in 1:nshots]
-HH = build.HamiltonianKerr(Nfock,Delta,epsilon,K)
-#rho0= build.initialgeneralrho(Nfock,kk,xav,pav)  #kth Fock displaced
-#rho0 = build.initialrho(Nfock,xav,pav)		  #Coherent state
-rho0 = build.initialrhoGS(HH)
-#rho0 = build.initialrhomix(Nfock,xav,pav)
-a = build.creation(Nfock)
-ad = transpose(conj(a))
-=======
-#timep=[(i-1)*tint for i in 1:nshots]
-timep=[]
-append!(timep,0.0)
-for i in 1:(nshots-1)
-append!(timep,i*tint+0.5)
-end
+#timep = collect(t0:tint:t0 + (nshots-1)*tint)
+timep=[(i-1)*tint for i in 1:nshots]
+#timep=[]
+#append!(timep,0.0)
+#for i in 1:(nshots-1)
+#append!(timep,i*tint+0.5)
+#end
 #outputlist=["output/wignerfunction"*string(i-1)*"_out.dat" for i in 1:nshots]
 outputlist=["wignerfunction_out.dat" for i in 1:nshots]
 HH = build.HamiltonianKerr(Nfock,Delta,epsilon,K)
@@ -63,7 +54,6 @@ rho0 = build.initialrho(Nfock,xav,pav)
 psi0 = build.initialpsi(Nfock,xav,pav)
 a    = build.anhilation(Nfock)
 ad   = transpose(conj(a))
->>>>>>> origin
 jumpop = [a,ad]
 sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,tm,tint)
 wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,jumppar,jumpop,outputlist)

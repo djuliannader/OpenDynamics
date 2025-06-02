@@ -60,42 +60,7 @@ function survivalamplitude(Nmax,Ham,psi0,tmax,tint)
 end
 
 
-<<<<<<< HEAD
-function wigneropen_t(Nmax, Ham, rho0, time, L, N, jpar, jop, string)
-    tspan = (0.0, time[end])          
-    tint  = 0.05
-    f(u, p, t) = -im*(Ham*u - u*Ham) +
-                 jpar[1]*(jop[1]*u*transpose(conj(jop[1])) -
-                          0.5*(transpose(conj(jop[1]))*jop[1]*u +
-                               u*transpose(conj(jop[1]))*jop[1])) +
-                 jpar[2]*(jop[2]*u*transpose(conj(jop[2])) -
-                          0.5*(transpose(conj(jop[2]))*jop[2]*u +
-                               u*transpose(conj(jop[2]))*jop[2]))
-    prob = ODEProblem(f, rho0, tspan)
-    sol  = solve(prob, Tsit5(); alg_hints = [:stiff], dt = tint)
-    wlist  = []
-    wnlist = []
-    for k in 1:length(time)
-        rhot  = sol(time[k])
-        evals = eigvals(rhot)
-        evecs = eigvecs(rhot)
-        eps   = 0.001
-        iflag = length(evals)
-        w       = []
-        wstates = []
-        while real(evals[iflag]) > eps
-            append!(w, real(evals[iflag]))
-            comp   = [evecs[i, iflag] for i in 1:(Nmax + 1)]
-            compwf = wigner.focktowf(comp, L, N)
-            append!(wstates, [compwf])
-            iflag -= 1
-        end
-        ww = wigner.wigner_mix(w, wstates, L, N, string[k])
-        append!(wlist,  ww[1])
-        append!(wnlist, ww[2])
-    end
-    return [wlist, wnlist]
-=======
+
 function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
   times=(0.0,time[length(time)])
   tint=0.01
@@ -130,7 +95,6 @@ function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
   end
   end
   return "done"
->>>>>>> origin
 end
 
 
