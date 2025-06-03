@@ -18,8 +18,8 @@ epsilon=0.0      # Parameter of the Kerr Hamiltonian
 K=1.0            # Parameter of the Kerr Hamiltonian
 tm = 0.1         # Maximum time for survival probability
 t0 = 10.0        # First shot of Wigner Fucntions
-nshots=11         # Number of shoots for the Wigner function
-tint = pi/2        # Time interval for the Wigner function shoots
+nshots=10.0         # Number of shoots for the Wigner function
+tint = 0.1        # Time interval for the Wigner function shoots
 jumppar = [0.01,0.01]      # Jump parameters
 
 
