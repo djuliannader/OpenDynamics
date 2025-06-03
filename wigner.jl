@@ -94,7 +94,7 @@ function wignerf_component(psi,L,N)
 	 end
 
 
-function wigner_mix(wp,psis,L,N,name::String)
+function wigner_mix(wp,psis,L,N,K,name::String)
      winst=wignerf_component(psis[1],L,N)
      wres = [0.0 for i in 1:length(winst)]
      d=2*L/N
@@ -107,7 +107,7 @@ function wigner_mix(wp,psis,L,N,name::String)
    sumnw = 0.0
    open(name,"w") do io
       for i in 1:length(wres)
-        println(io,winst[i][1]," ",winst[i][2]," ",wres[i])
+        println(io,winst[i][1]*K^(1/2)," ",winst[i][2]*K^(1/2)," ",wres[i])
 	sumw=sumw+d*d*wres[i]
 	sumnw=sumnw+d*d*abs(wres[i])
       end

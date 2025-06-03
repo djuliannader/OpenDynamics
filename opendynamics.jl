@@ -61,7 +61,7 @@ end
 
 
 
-function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
+function wigneropen_t(Nmax,Ham,rho0,time,L,N,K,jpar,jop,string)
   times=(0.0,time[length(time)])
   tint=0.01
   f(u,p,t) = -im*(Ham*u-u*Ham) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) ) 
@@ -88,7 +88,7 @@ function wigneropen_t(Nmax,Ham,rho0,time,L,N,jpar,jop,string)
     append!(wstates,[compwf])
     iflag=iflag-1
   end
-  ww=wigner.wigner_mix(w,wstates,L,N,string[k])
+  ww=wigner.wigner_mix(w,wstates,L,N,K,string[k])
   println(io,time[k]," ",trunc(ww[1],digits=6)," ", trunc(ww[2],digits=6))
   append!(wlist,ww[1])
   append!(wnlist,ww[2])

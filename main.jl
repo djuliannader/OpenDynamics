@@ -17,7 +17,7 @@ Delta=-2.0       # Parameter of the Kerr Hamiltonian
 epsilon=0.0      # Parameter of the Kerr Hamiltonian
 K=1.0            # Parameter of the Kerr Hamiltonian
 tm = 0.1         # Maximum time for survival probability
-t0 = 0.0         # First shot of Wigner Fucntions
+t0 = 10.0         # First shot of Wigner Fucntions
 nshots=5         # Number of shoots for the Wigner function
 tint = 1         # Time interval for the Wigner function shoots
 jumppar = [0.0,0.0]      # Jump parameters
@@ -25,14 +25,8 @@ jumppar = [0.0,0.0]      # Jump parameters
 
 #  ------ Caulculating Open dynamics----------------
 #timep = collect(t0:tint:t0 + (nshots-1)*tint)
-#timep=[(i-1)*tint for i in 1:nshots]
-timep=[]
-append!(timep,0.0)
-for i in 1:(nshots-1)
-append!(timep,i*tint+0.5)
-end
-#outputlist=["output/wignerfunction"*string(i-1)*"_out.dat" for i in 1:nshots]
-outputlist=["wignerfunction_out.dat" for i in 1:nshots]
+timep=[(i-1)*tint for i in 1:nshots]
+outputlist=["output/wignerfunction"*string(i-1)*"_out.dat" for i in 1:nshots]
 HH = build.HamiltonianKerr(Nfock,Delta,epsilon,K)
 rho0 = build.initialrho(Nfock,xav,pav)
 psi0 = build.initialpsi(Nfock,xav,pav)
@@ -40,7 +34,7 @@ a    = build.anhilation(Nfock)
 ad   = transpose(conj(a))
 jumpop = [a,ad]
 sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,tm,tint)
-wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,jumppar,jumpop,outputlist)
+wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,K,jumppar,jumpop,outputlist)
 # --------------------------------------
 
 
