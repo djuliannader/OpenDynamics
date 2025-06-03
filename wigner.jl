@@ -104,17 +104,17 @@ function wigner_mix(wp,psis,L,N,K,name::String)
      wres = wres  + wp[i]*wr
    end
    sumw = 0.0
-   sumnw = 0.0
+   sumabs = 0.0
    open(name,"w") do io
       for i in 1:length(wres)
         println(io,winst[i][1]*K^(1/2)," ",winst[i][2]*K^(1/2)," ",wres[i])
 	sumw=sumw+d*d*wres[i]
-	sumnw=sumnw+d*d*abs(wres[i])
+	sumabs=sumabs+d*d*abs(wres[i])
       end
    end
    res1=convert(Float64,real(sumw))
-   res2=convert(Float64,real(sumnw)-1)
-   return [res1,res2]
+   res2=convert(Float64,real(sumabs))
+   return [res1,res2-res1]
 end
 
 function focktowf(lfock,L,N)
