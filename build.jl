@@ -54,6 +54,17 @@ function coherentstate(Nmax,xc,pc)
   return csn
 end
 
+function displacedfock(Nmax,xc,pc,k)
+  al=(1/2^(1/2))*(xc+im*pc)
+  vstate = [0 for i in 1:(Nmax+1)]
+  vstate[k] = 1.0
+  aop = anhilation(Nmax)
+  adop = transpose(aop)
+  Dop= exp(al*adop - conj(al)*aop)
+  csn = Dop*vstate
+  return csn
+end
+
 function generalCoherentStates(Nmax,k,xc,pc)		#k symbolizes the kth displaced state
   al=(1/2^(1/2))*(xc+im*pc) 		     		#alpha
   diagid  = [1.0 for i in 1:(Nmax+1)]
@@ -65,17 +76,26 @@ function generalCoherentStates(Nmax,k,xc,pc)		#k symbolizes the kth displaced st
   return gcs
 end
 
-function initialgeneralrho(Nmax,k,xc,pc)
-   cs = generalCoherentStates(Nmax,k,xc,pc)
+function initialrho(Nmax,xc,pc)
+   cs = coherentstate(Nmax,xc,pc)
    cstp = transpose(conj(cs))
    rhoin = cs*cstp
    return rhoin
 end
 
-function initialrho(Nmax,xc,pc)
-   cs = coherentstate(Nmax,xc,pc)
-   cstp = transpose(conj(cs))
-   rhoin = cs*cstp
+function initialrhocat(Nmax,alpha)
+   xc = 2^(1/2)*real(alpha)
+   pc = 2^(1/2)*imag(alpha)
+   cat = (1/2^(1/2))*(coherentstate(Nmax,xc,pc)+coherentstate(Nmax,-xc,-pc))
+   cattp = transpose(conj(cat))
+   rhoin = cat*cattp
+   return rhoin
+end
+
+function initialrhofock(Nmax,xc,pc,k)
+   ds = displacedfock(Nmax,xc,pc,k)
+   dtp = transpose(conj(ds))
+   rhoin = ds*dtp
    return rhoin
 end
 
@@ -132,6 +152,16 @@ function rho0coherent2modes(Nmaxa,Nmaxb,xav,pav)
       rho0[k,k]=abs(exp(-abs(al)^2)*(al^(2*(k-1)))/factorial(k-1))
    end
    return rho0
+end
+
+function initialrhoquench(Nmax,epsilon0,Delta,K)
+  HH = HamiltonianKerr(Nmax,Delta,epsilon0,K)
+  eigvecsHH = eigvecs(HH)
+  eigvalsHH = eigvals(HH)
+  psi0 = [eigvecsHH[i,1]+0.0*im for i in 1:length(eigvalsHH)]
+  psi0t = transpose(conj(psi0))
+  rhogs = psi0*psi0t
+  return rhogs
 end
 
 function rho0thermal2modes(Nmaxa,Nmaxb,be)

@@ -8,37 +8,55 @@ import opendynamics
 
 
 
-Nfock=20         # Size of the Fock space
+Nfock=40         # Size of the Fock space
 N=400            # Finite differences
-L=20             # Size of the phase space
-xav=-2.0       # Average position of the initial coherent state
+L=30             # Size of the phase space
+xav=-2.0         # Average position of the initial coherent state
 pav=2.0          # Average momentum of the initial coherent state
-Delta=-2.0       # Parameter of the Kerr Hamiltonian
-epsilon=0.0      # Parameter of the Kerr Hamiltonian
-K=1.0            # Parameter of the Kerr Hamiltonian
-tm = 0.1         # Maximum time for survival probability
-t0 = 10.0        # First shot of Wigner Fucntions
-nshots=10.0         # Number of shoots for the Wigner function
-tint = 0.1        # Time interval for the Wigner function shoots
-jumppar = [0.01,0.01]      # Jump parameters
+Delta=-1.0       # Parameter of the Kerr Hamiltonian
+epsilon0=1.5     # Quench parameter of the Kerr Hamiltonian  (initial)
+epsilonf=0.4     # Quench parameter of the Kerr Hamiltonian (final)
+K=0.1            # Parameter of the Kerr Hamiltonian
+nis = 1           # initial state (NFock-1)
+tm = 5            # Maximum time for survival probability
+tint = 0.01       # Time interval for the Survival Probability
+nshots = 3        # Number of shoots for the Wigner function
+tint2 = 0.05      # Time interval for the Wigner function shoots
+dper = 5.0        # period of the drive
+dpar = 0.0        # parameter of the drive
+
+
+jumppar = [0.05,0.0]      # Jump parameters
 
 
 #  ------ Caulculating Open dynamics----------------
-timep=[(i-1)*tint for i in 1:nshots]
+#timep=[(i-1)*tint2 for i in 1:nshots]
+timep=[0,4,8]
 outputlist=["output/wignerfunction"*string(i-1)*"_out.dat" for i in 1:nshots]
-HH = build.HamiltonianKerr(Nfock,Delta,epsilon,K)
-rho0 = build.initialrho(Nfock,xav,pav)
-psi0 = build.initialpsi(Nfock,xav,pav)
+#timep=[]
+#for i in 1:(nshots)
+# append!(timep,(i-1)*tint2+0.5)
+#end
+#outputlist=["output/wignerfunction_out.dat" for i in 1:nshots]
+HH = build.HamiltonianKerr(Nfock,Delta,epsilonf,K)
+#diagH0  = [0.0+0*im for i in 1:(Nfock+1)]
+#HH = Diagonal(diagH0)
+#rho0 = build.initialrhofock(Nfock,xav,pav,nis)
+#rho0 = build.initialrhocat(Nfock,al)
+rho0 = build.initialrhoquench(Nfock,epsilon0,Delta,K)
 a    = build.anhilation(Nfock)
-ad   = transpose(conj(a))
+ad   = transpose(a)
+nop   = ad*a
 jumpop = [a,ad]
-sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,tm,tint)
-wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,K,jumppar,jumpop,outputlist)
+Nexp = tr(rho0*nop)
+sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,dpar,nop,dper,tm,tint)
+wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,K,jumppar,jumpop,dpar,nop,dper,outputlist)
 # --------------------------------------
 
 
 # ------  Printing results ----------------
  println("Size of the Fock space: ",Nfock)
+ println("Expectation value <n> of the initial state: ",real(Nexp))
  println("Number of subintervals for the finite difference: ",N)
 println("-------------   Go to file output/wignerresults.dat to see the following   ----------------")
 println("-------------        - 1st column: time                             ----------------")
