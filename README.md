@@ -14,10 +14,17 @@ This repository provides data and codes for the paper Open Dynamics of the Wigne
 The paper is available on arXiv.
 The repository is currently being developed; please await its completion
 
+## Environment Requirements  
+
+To run this repository, please make sure the following environment is available:
+
+- LinearAlgebra (stdlib)  
+- DifferentialEquations
 
 ## Usage
 
-For using the code go to file main.jl, manipulate parameters and run as 
+
+To run the code, navigate to the folder /src manipulate parameters directly in the file main.jl and run:
 
 ```bash
 julia main.jl
