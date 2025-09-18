@@ -1,5 +1,7 @@
-# linguist-vendored
-*.jl linguist-lenguaje=Julia
-*.nb linguist-vendored=False
+# Ignore Mathematica files from language statistics
+*.nb linguist-detectable=false
+*.wl linguist-detectable=false
+*.m linguist-detectable=false
 
-
+# Ensure Julia files are counted
+*.jl linguist-detectable=true
