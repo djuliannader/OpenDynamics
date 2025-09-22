@@ -34,6 +34,20 @@ function HamiltonianOsc(Nmax,w0,x0,E0)
   return Ham
 end
 
+function HamiltonianQuartic(Nmax,a,b)
+  diag  = [0.0 for i in 1:(Nmax+1)]
+  diagid  = [1.0 for i in 1:(Nmax+1)]
+  diaga = [0.0 for i in 1:Nmax]
+  diagab = [sqrt(i) for i in 1:Nmax]
+  aop = Tridiagonal(diaga, diag, diagab)
+  id = Diagonal(diagid)
+  adop = transpose(aop)
+  xop=(1/2^(1/2))*(aop+adop)
+  pop=(-im)*(1/2^(1/2))*(aop-adop)
+  Ham = pop^2/2 + a*xop^2 + b*xop^4
+  return Ham
+end
+
 function anhilation(Nmax)
   diag  = [0.0 for i in 1:(Nmax+1)]
   diagid  = [1.0 for i in 1:(Nmax+1)]

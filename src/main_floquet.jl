@@ -1,8 +1,8 @@
 module main
 push!(LOAD_PATH, pwd())
 using LinearAlgebra
-include("troterization.jl")
-include("build.jl")
+include("modules/troterization.jl")
+include("modules/build.jl")
 using .troterization
 using .build
 

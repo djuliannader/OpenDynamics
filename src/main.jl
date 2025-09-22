@@ -11,7 +11,7 @@ using .opendynamics
 
 
 
-Nfock=40         # Size of the Fock space
+Nfock=50         # Size of the Fock space
 N=400            # Finite differences
 L=30             # Size of the phase space
 xav=-2.0         # Average position of the initial coherent state
@@ -19,17 +19,18 @@ pav=2.0          # Average momentum of the initial coherent state
 Delta=-1.0       # Parameter of the Kerr Hamiltonian
 epsilon0=1.5     # Quench parameter of the Kerr Hamiltonian  (initial)
 epsilonf=0.4     # Quench parameter of the Kerr Hamiltonian (final)
-K=0.1            # Parameter of the Kerr Hamiltonian
+K=0.5            # Parameter of the Kerr Hamiltonian
 nis = 1           # initial state (NFock-1)
-tm = 5            # Maximum time for survival probability
-tint = 0.01       # Time interval for the Survival Probability
+tm = 7            # Maximum time for survival probability
+tint = 0.01       # Time interval for the SP and LE
 nshots = 2        # Number of shoots for the Wigner function
 tint2 = 0.05      # Time interval for the Wigner function shoots
 dper = 1.0        # period of the drive
-dpar = 1.0        # parameter of the drive
+dpar = 0.0        # amplitude of the drive
+acc = 1e-16       # Accuraccy goal for the differential equations
 
 
-jumppar = [0.1,0.0]      # Jump parameters
+jumppar = [0.0,0.0]      # Jump parameters
 
 
 #  ------ Caulculating Open dynamics----------------
@@ -53,8 +54,8 @@ dop   = ad*a
 nop   = ad*a
 jumpop = [a,ad]
 Nexp = tr(rho0*nop)
-sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,dpar,dop,dper,tm,tint)
-wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,K,jumppar,jumpop,dpar,dop,dper,outputlist)
+sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,dpar,dop,dper,tm,tint,acc)
+wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,K,jumppar,jumpop,dpar,dop,dper,acc,outputlist)
 # --------------------------------------
 
 

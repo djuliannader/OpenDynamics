@@ -2,9 +2,9 @@ module main
 push!(LOAD_PATH, pwd())
 using LinearAlgebra
 using DifferentialEquations
-include("wigner.jl")
-include("build.jl")
-include("opendynamics.jl")
+include("modules/wigner.jl")
+include("modules/build.jl")
+include("modules/opendynamics.jl")
 using .wigner
 using .build
 using .opendynamics

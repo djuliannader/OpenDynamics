@@ -7,13 +7,13 @@ include("build.jl")
 using .wigner
 using .build
 
-
-function survivalp(Nmax,Ham,rho0,jpar,jop,dop,dpar,dper,tmax,tint)
+function survivalp(Nmax,Ham,rho0,jpar,jop,dop,dpar,dper,tmax,tint,acc)
   times=(0.0,tmax)
   f(u,p,t) = -im*((Ham+dpar*dop*cos(2*pi*t/dper))*u-u*(Ham+dpar*dop*cos(2*pi*t/dper))) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) )
  prob = ODEProblem(f,rho0,times)
- sol = solve(prob,abstol = 1e-16,Tsit5(),alg_hints = [:stiff],dt=tint)
- #println("--here --")
+ sol = solve(prob,abstol = acc,Tsit5(),alg_hints = [:stiff],dt=tint)
+    #println("--here --")
+ 
  nt = floor(Int, tmax/tint)
  surprob = []
  open("output/survivalprobability.dat","w") do io
@@ -39,12 +39,12 @@ end
 
 
 
-function wigneropen_t(Nmax,Ham,rho0,time,L,N,K,jpar,jop,dpar,dop,dper,string)
+function wigneropen_t(Nmax,Ham,rho0,time,L,N,K,jpar,jop,dpar,dop,dper,acc,string)
   times=(0.0,time[length(time)])
   tint=0.01
   f(u,p,t) = -im*((Ham+dpar*dop*cos(2*pi*t/dper))*u-u*(Ham+dpar*dop*cos(2*pi*t/dper))) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) ) 
   prob = ODEProblem(f,rho0,times)
-  sol = solve(prob,abstol = 1e-16,Tsit5(),alg_hints = [:stiff],dt=tint)
+  sol = solve(prob,abstol = acc,Tsit5(),alg_hints = [:stiff],dt=tint)
   wlist=[]
   wnlist=[]
   open("output/wignerresults.dat","w") do io
@@ -101,6 +101,16 @@ function expectation2modes(op,Ham,rho0,jpar,jop,tmax,tmsp)
   return "done"
 end
 
-
+function survivalamplitude(N,Ham,psi0,tm,tint)
+    psi0a = transpose(conj(psi0))
+    time = [i for i in 0:tint:tm]
+    open("../output/survivalamplitudetest.dat","w") do io
+    for ti in time
+        psit = exp(-im*ti*Ham)*psi0
+        sa = psi0a*psit
+        println(io,ti," ", round(real(sa[1]),digits=8)," ",round(imag(sa[1]),digits=8))
+   end
+   end
+end
 
 end
