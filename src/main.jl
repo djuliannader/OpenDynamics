@@ -12,14 +12,14 @@ using .opendynamics
 
 
 Nfock=50         # Size of the Fock space
-N=400            # Finite differences
+N=500            # Finite differences
 L=30             # Size of the phase space
 xav=-2.0         # Average position of the initial coherent state
 pav=2.0          # Average momentum of the initial coherent state
 Delta=-1.0       # Parameter of the Kerr Hamiltonian
-epsilon0=1.5     # Quench parameter of the Kerr Hamiltonian  (initial)
-epsilonf=0.4     # Quench parameter of the Kerr Hamiltonian (final)
-K=0.5            # Parameter of the Kerr Hamiltonian
+epsilon0=0.0     # Quench parameter of the Kerr Hamiltonian  (initial)
+epsilonf=0.0     # Quench parameter of the Kerr Hamiltonian (final)
+K=0.0000001            # Parameter of the Kerr Hamiltonian
 nis = 1           # initial state (NFock-1)
 tm = 7            # Maximum time for survival probability
 tint = 0.01       # Time interval for the SP and LE
@@ -52,9 +52,10 @@ a    = build.anhilation(Nfock)
 ad   = transpose(a)
 dop   = ad*a
 nop   = ad*a
+Aop   = (1/sqrt(2))*(a+ad)  # operator for QFI
 jumpop = [a,ad]
 Nexp = tr(rho0*nop)
-sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,dpar,dop,dper,tm,tint,acc)
+sp = opendynamics.survivalp(Nfock,HH,rho0,jumppar,jumpop,dpar,dop,dper,Aop,tm,tint,acc)
 wopen = opendynamics.wigneropen_t(Nfock,HH,rho0,timep,L,N,K,jumppar,jumpop,dpar,dop,dper,acc,outputlist)
 # --------------------------------------
 

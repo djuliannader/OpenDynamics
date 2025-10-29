@@ -3,11 +3,14 @@ push!(LOAD_PATH, pwd())
 using LinearAlgebra
 using DifferentialEquations
 include("wigner.jl")
+include("fisher.jl")
 include("build.jl")
 using .wigner
 using .build
+using .fisher
 
-function survivalp(Nmax,Ham,rho0,jpar,jop,dop,dpar,dper,tmax,tint,acc)
+
+function survivalp(Nmax,Ham,rho0,jpar,jop,dop,dpar,dper,Aop,tmax,tint,acc)
   times=(0.0,tmax)
   f(u,p,t) = -im*((Ham+dpar*dop*cos(2*pi*t/dper))*u-u*(Ham+dpar*dop*cos(2*pi*t/dper))) + jpar[1]*(jop[1]*u*transpose(conj(jop[1])) - (1/2)*(transpose(conj(jop[1]))*jop[1]*u + u*transpose(conj(jop[1]))*jop[1]) ) +  jpar[2]*(jop[2]*u*transpose(conj(jop[2])) - (1/2)*(transpose(conj(jop[2]))*jop[2]*u + u*transpose(conj(jop[2]))*jop[2]) )
  prob = ODEProblem(f,rho0,times)
@@ -18,8 +21,10 @@ function survivalp(Nmax,Ham,rho0,jpar,jop,dop,dpar,dper,tmax,tint,acc)
  surprob = []
  open("output/survivalprobability.dat","w") do io
  open("output/loschmidt_echo.dat","w") do io2
+ open("output/fisher.dat","w") do io3
  for i in 1:(nt+1)
    rhot = sol(tint*(i-1))
+   QFI = fisher.FisherInf(rhot, Aop)
    sp = (tr((rhot^(1/2)*rho0*rhot^(1/2))^(1/2)))^2
    fidinst = (tr((rhot^(1/2)*rho0*rhot^(1/2))^(1/2)))
    mat = rho0*rhot
@@ -27,11 +32,14 @@ function survivalp(Nmax,Ham,rho0,jpar,jop,dop,dpar,dper,tmax,tint,acc)
    lecho   = sum(ls)
    println(io,tint*(i-1)," ", round(real(sp),digits=8))
    println(io2,tint*(i-1)," ", round(real(lecho),digits=8)," ",round(imag(lecho),digits=8)," ",round(real(fidinst),digits=8)," ",round(imag(fidinst),digits=8))
+   println(io3,tint*(i-1)," ", round(real(QFI),digits=8))
+end
  end
  end
  end
  println("-------------   Go to file output/survivalprobability.dat to see the survival probability  ----------------")
  println("-------------   Go to file output/loschmidt_echo.dat to see the Loschmidt echo amplitude   ----------------")
+ println("-------------   Go to file output/fisher.dat to see the Fisher Information   ----------------")
   return "done"
 end
 
